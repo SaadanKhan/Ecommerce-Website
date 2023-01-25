@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% load static %}
+{% load cart %}
+<style>
+  #btn_s {
+    margin-right: 10px;
+  }
+</style>
+
+
+{% block content %}
+<body>
+  <div class="row g-0">
+    <div class="col-sm-6 col-md-3 mt-3  text-left">
+      <div class="container-fluid ">
+        <div class="list-group">
+
+          {% for cat in carts %}
+          <a href="/?category_id={{cat.id}}" class="list-group-item list-group-item-action">{{cat.name}}</a>
+          {% endfor %}
+
+        </div>
+      </div>
+    </div>
+
+    <div class="col-6 col-md-9 container" id="items">
+      <div class="row ">
+
+        {% for prd in products %}
+        <div class="card my-3 mx-1" style="width: 18rem;" id="{{prd.id}}">
+          <img src="{{prd.image.url}}" alt="">
+          <div class="card-body">
+            <p class="card-title">{{prd.name}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b> Rs.{{prd.price}}</b></p>
+            <p class="card-title"></p>
+            <p class="card-title">{{prd.category}}</p>
+
+          </div>
+
+            {% if prd|is_in_cart:request.session.cart %}
+
+            <div class="card-footer row">
+              
+              <form action="/#{{prd.id}}" method="post" class="col-2">
+                {% csrf_token %}
+                <input type="text" name="product_id" value="{{prd.id}}" hidden>
+                <input type="text" name="remove" value="True" hidden>
+                <input type="submit" name="" value=" - " class="btn btn-block btn-primary">
+              </form>
+
+              <div class="text-center col">
+                  {{prd|cart_quantity:request.session.cart}} in cart
+              </div>
+
+              <form action="/#{{prd.id}}" method="post" class="col-2">
+                {% csrf_token %}
+                <input type="text" name="product_id" value="{{prd.id}}" hidden>
+                <input type="submit" name="" value=" + " class="btn btn-block btn-primary">
+              </form>
+
+          </div>
+
+            {% else %}
+          
+            <form action="/#{{prd.id}}" method="post">
+              {% csrf_token %}
+              <input type="text" name="product_id" value="{{prd.id}}" hidden>
+              <input type="submit" name="" class="btn btn-primary" value="Add to Cart">
+            </form>
+          
+
+          {% endif %}
+        </div>
+        {% endfor %}
+
+      </div>
+    </div>
+
+
+  </div>
+</body>
+{% endblock %}

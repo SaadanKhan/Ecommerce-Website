@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<style>
+     form
+     {
+       margin-left: 390px;
+       margin-right: 390px;
+       margin-top: 40px;
+     }
+     form h2
+     {
+       margin-bottom: 25px;
+     }
+</style>
+<body>
+       
+<form action="/login/" method="POST">
+       <h2>Login</h2>
+       {% if error %}
+       <div class="alert alert-danger" role="alert">
+         <h4 class="alert-heading">{{error}}</h4>
+       </div>
+       {% endif %}
+
+       {% csrf_token %}
+
+       <div class="form-group my-2">
+           <label for="">Email</label>
+           <input required type="email" name="email" id=""
+           class=" form-control-sm form-control" placeholder="abc@gmail.com" value="{{value.email}}">
+       </div>
+
+       <div class="form-group my-2">
+           <label for="">Password</label>
+           <input type="password" 
+           name="password" required
+           id=""
+            class="form-control form-control-sm" placeholder="********">
+       </div>
+
+       <div class="d-grid gap-2">
+       <button type="submit" value="login" class="btn btn-primary my-4">
+              Login
+       </button>
+       </div>     
+   </form>
+   
+   <div style="margin-left:390px ;">
+          Don't have an account ?<a href="/signup">Create</a>
+   </div>
+              {% endblock %}
+
+</body>
+
+</html>
